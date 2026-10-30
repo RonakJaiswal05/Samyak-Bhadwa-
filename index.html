@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/js/gate.js"></script>
+<title>Katha Studios — Coming soon</title>
+<meta name="description" content="Katha Studios is an Indian entertainment company working across film production, web series & short format, film distribution and creative solutions. Coming soon.">
+<meta name="theme-color" content="#F3EEE4">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Katha Studios — Coming soon">
+<meta property="og:description" content="An entertainment studio for film production, web series & short format, film distribution and creative solutions.">
+<link rel="icon" type="image/png" href="assets/brand/katha-logo-192.png">
+<script>document.documentElement.className+=' js';</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Schibsted+Grotesk:wght@400..700&display=swap">
+<link rel="stylesheet" href="assets/css/katha.css">
+</head>
+<body class="soon s-ivory">
+
+<main class="soon__main" id="main">
+  <header class="soon__top">
+    <img class="soon__logo" src="assets/brand/katha-logo-480.png" srcset="assets/brand/katha-logo-480.png 480w, assets/brand/katha-logo-1200.png 1200w" sizes="130px" width="480" height="273" alt="Katha Studios">
+    <p class="meta meta--soft soon__tag">Website in development</p>
+  </header>
+
+  <section class="soon__stage" aria-labelledby="soon-title">
+    <h1 class="t-serif soon__title" id="soon-title">
+      <span class="mask"><span>coming</span></span>
+      <span class="mask"><span><em>soon</em><span class="dots" aria-hidden="true"><i></i><i></i></span></span></span>
+    </h1>
+
+    <div class="soon__line" aria-hidden="true">
+      <span class="soon__track"><i></i><b></b></span>
+      <span class="soon__end"></span>
+    </div>
+  </section>
+
+  <footer class="soon__foot">
+    <p class="soon__intro">An entertainment studio for film production, web series & short format, film distribution and creative solutions.</p>
+
+    <form class="soon__form" id="gate-form" novalidate>
+      <div class="field">
+        <label for="gate-password">Preview access</label>
+        <div class="soon__input">
+          <input id="gate-password" name="password" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" required aria-describedby="gate-status">
+          <button type="button" class="soon__reveal meta" aria-pressed="false" aria-controls="gate-password">Show</button>
+        </div>
+      </div>
+      <div class="soon__actions">
+        <p class="soon__status" id="gate-status" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn-send">Enter <span class="arrow" aria-hidden="true"></span></button>
+      </div>
+      <p class="soon__open" hidden>
+        <span class="marker marker--green" aria-hidden="true"></span>
+        <span>Preview unlocked for this visit.</span>
+        <a class="cta" href="home.html">Enter the site <span class="arrow"></span></a>
+        <button type="button" class="soon__lock meta">Lock</button>
+      </p>
+    </form>
+
+    <p class="meta meta--soft soon__copy">© <span data-year></span> Katha Studios</p>
+  </footer>
+</main>
+
+<span class="lines soon__end-rule" aria-hidden="true"></span>
+
+<script>
+(function () {
+  var gate = window.KATHA_GATE;
+  var form = document.getElementById('gate-form');
+  var input = document.getElementById('gate-password');
+  var status = document.getElementById('gate-status');
+  var field = input.closest('.field');
+  var reveal = form.querySelector('.soon__reveal');
+  var openNote = form.querySelector('.soon__open');
+
+  document.querySelector('[data-year]').textContent = new Date().getFullYear();
+  requestAnimationFrame(function () { document.body.classList.add('is-ready'); });
+
+  // the coming soon page always leads to the home page
+  function destination() { return gate.home; }
+
+  function showOpen() {
+    openNote.hidden = !gate.isOpen();
+  }
+  showOpen();
+
+  reveal.addEventListener('click', function () {
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    reveal.textContent = show ? 'Hide' : 'Show';
+    reveal.setAttribute('aria-pressed', show ? 'true' : 'false');
+    input.focus();
+  });
+
+  input.addEventListener('input', function () {
+    field.classList.remove('is-invalid');
+    input.removeAttribute('aria-invalid');
+    status.textContent = '';
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var value = input.value.trim();
+    if (!value) {
+      status.textContent = 'Enter the preview password.';
+      field.classList.add('is-invalid'); input.setAttribute('aria-invalid', 'true'); input.focus();
+      return;
+    }
+    if (gate.check(value)) {
+      gate.open();
+      status.textContent = 'Welcome in.';
+      document.body.classList.add('is-unlocking');
+      setTimeout(function () { location.href = destination(); }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900);
+    } else {
+      status.textContent = 'That password isn’t right.';
+      field.classList.add('is-invalid'); input.setAttribute('aria-invalid', 'true');
+      input.select();
+    }
+  });
+
+  form.querySelector('.soon__lock').addEventListener('click', function () {
+    gate.lock(); showOpen(); input.focus();
+  });
+})();
+</script>
+</body>
+</html>
